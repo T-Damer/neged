@@ -22,20 +22,14 @@ const server = Bun.serve({
       const tipsParsed = await tipsFile.json()
       const tips = tipsParsed[username]
 
-      if (tips === undefined) {
-        throw new Error('User tips not found')
-      }
-
       const allowanceParsed = await allowanceFile.json()
       const allowance = allowanceParsed[username]
 
-      if (allowance === undefined) {
-        throw new Error('Allowance not found')
-      }
-
       const reply = await neynarClient.publishCast(
         process.env.SIGNER_UUID,
-        `${username} Tips received: ${tips} NEGED \n Allowance: ${allowance} NEGED`,
+        `${username} Tips received: ${tips || 0} NEGED \n Allowance: ${
+          allowance || 0
+        } NEGED`,
         {
           embeds: [],
           replyTo: hookData.data.hash,
